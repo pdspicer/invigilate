@@ -1,7 +1,7 @@
 {
   "name": "invigilate",
   "version": "1.0.1",
-  "description": "Configurable logging stub that decouples library development and logging considerations",
+  "description": "Configurable logging proxy that decouples library development and logging considerations",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -16,6 +16,7 @@
   "keywords": [
     "log",
     "logger",
+    "proxy",
     "stub",
     "inject",
     "utility",
