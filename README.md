@@ -96,3 +96,5 @@ logger.
 ## License
 Copyright (c) 2016, Paul Spicer.
 Licensed under [MIT][].
+
+[MIT]: ./LICENSE
