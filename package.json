@@ -1,0 +1,32 @@
+{
+  "name": "invigilate",
+  "version": "1.0.0",
+  "description": "Configurable logging stub that decouples library development and logging considerations",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://pdspicer@github.com/pdspicer/invigilate.git"
+  },
+  "keywords": [
+    "log",
+    "logger",
+    "stub",
+    "inject",
+    "utility",
+    "silent",
+    "configurable",
+    "decoupling"
+  ],
+  "author": "pdspicer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pdspicer/invigilate/issues"
+  },
+  "homepage": "https://github.com/pdspicer/invigilate#readme"
+}
