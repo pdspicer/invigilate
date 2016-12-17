@@ -6,7 +6,7 @@ var MAX_DEPTH = 20;
 
 var noop = function () {};
 var frozenNoop = {value: noop, enumerable: true, configurable: false, writable: false};
-var defaultLogger = Object.defineProperties({}, {
+var noopLogger = Object.defineProperties({}, {
     log: frozenNoop,
     debug: frozenNoop,
     info: frozenNoop,
@@ -15,7 +15,17 @@ var defaultLogger = Object.defineProperties({}, {
     fatal: frozenNoop
 });
 
-Object.freeze(defaultLogger);
+var defaultLogger = Object.freeze(noopLogger);
+
+Object.defineProperty(module.exports, 'defaultLogger', {
+    configurable: false,
+    get: function () {
+        return defaultLogger;
+    },
+    set: function (logger) {
+        defaultLogger = logger || noopLogger;
+    }
+})
 
 function injector (obj, property, definition) {
     if (!(obj instanceof module.constructor)) throw new Error('obj parameter must be a module object');
@@ -53,7 +63,7 @@ function contextualLogger (ctx) {
         return {
             value: function () {
                 var logger = ctx.logger;
-                return logger[name].apply(logger, arguments);
+                return (logger[name] || defaultLogger[name] || noopLogger[name]).apply(logger, arguments);
             },
             enumerable: true,
             configurable: false,
