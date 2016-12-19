@@ -13,12 +13,12 @@ function test (obj, testFn) {
     
     // set the logger to a custom logger, obj and all children will use this logger
     obj.logger = {
-        log: function () { console.log("REPLACEMENT LOGGER: LOG"); },
-        debug: function () { console.log("REPLACEMENT LOGGER: DEBUG"); },
-        info: function () { console.log("REPLACEMENT LOGGER: INFO"); },
-        warn: function () { console.log("REPLACEMENT LOGGER: WARN"); },
-        error: function () { console.log("REPLACEMENT LOGGER: ERROR"); },
-        fatal: function () { console.log("REPLACEMENT LOGGER: FATAL"); }
+        log: function () { console.log('REPLACEMENT LOGGER: LOG'); },
+        debug: function () { console.log('REPLACEMENT LOGGER: DEBUG'); },
+        info: function () { console.log('REPLACEMENT LOGGER: INFO'); },
+        warn: function () { console.log('REPLACEMENT LOGGER: WARN'); },
+        error: function () { console.log('REPLACEMENT LOGGER: ERROR'); },
+        fatal: function () { console.log('REPLACEMENT LOGGER: FATAL'); }
     };
     testFn();
     
