@@ -8,8 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "all": "npm test && npm run coverage && npm run lint",
-    "test": "mocha",
+    "test": "npm run unit-test && npm run coverage && npm run lint",
+    "unit-test": "mocha",
     "lint": "eslint .",
     "coverage": "npm run coverage:cover && npm run coverage:check",
     "coverage:cover": "istanbul cover _mocha",
