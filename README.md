@@ -2,6 +2,7 @@
 
 [![npm version][npm-badge]][npm-url]
 [![Build Status][travis-badge]][travis-url]
+[![Coverage Status][coveralls-badge]][coveralls-url]
 
 ## Motivation
 Logging is an important aspect of any project. It can be helpful during development to print process and state information,
@@ -105,3 +106,5 @@ Licensed under [MIT][].
 [travis-url]: https://travis-ci.org/pdspicer/invigilate
 [npm-badge]: https://badge.fury.io/js/invigilate.svg
 [npm-url]: https://badge.fury.io/js/invigilate
+[coveralls-badge]: https://coveralls.io/repos/github/pdspicer/invigilate/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/pdspicer/invigilate?branch=master

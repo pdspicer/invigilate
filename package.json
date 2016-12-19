@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "coverage": "npm run coverage:cover && npm run coverage:check",
     "coverage:cover": "istanbul cover _mocha",
-    "coverage:check": "istanbul check-coverage ./coverage/**/coverage*.json"
+    "coverage:check": "istanbul check-coverage ./coverage/**/coverage*.json",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
   },
   "homepage": "https://github.com/pdspicer/invigilate#readme",
   "devDependencies": {
+    "coveralls": "^2.11.15",
     "eslint": "^3.12.2",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
