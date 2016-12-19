@@ -216,16 +216,16 @@ describe('Configuration', function () {
         
         it('should allow the property to be assigned to a primitive, without the property', function () {
             mod.exports = 'something';
-            var descriptor = Object.getOwnPropertyDescriptor(mod.exports, expectedProp);
+            var value = mod.exports[expectedProp];
             mod.exports = {};
-            should.not.exist(descriptor);
+            should.not.exist(value);
         });
     }
     
     context('default configuration', function () {
         configurationTest();
         
-        it('should pass the value sent to the get directly through if no setter is get', function () {
+        it('should pass the value sent to the get directly through if no getter is set', function () {
             mod.exports.logger.should.equal(invigilate.loggers.default);
         });
         
