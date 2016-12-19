@@ -1,5 +1,8 @@
 # invigilate
 
+[![npm version][npm-badge]][npm-url]
+[![Build Status][travis-badge]][travis-url]
+
 ## Motivation
 Logging is an important aspect of any project. It can be helpful during development to print process and state information,
 and in deployment to track activity and diagnose issues that might occur. But when developing a library, logging 
@@ -98,3 +101,7 @@ Copyright (c) 2016, Paul Spicer.
 Licensed under [MIT][].
 
 [MIT]: ./LICENSE
+[travis-badge]: https://travis-ci.org/pdspicer/invigilate.svg?branch=master
+[travis-url]: https://travis-ci.org/pdspicer/invigilate
+[npm-badge]: https://badge.fury.io/js/invigilate.svg
+[npm-url]: https://badge.fury.io/js/invigilate
