@@ -31,6 +31,7 @@ of the sort, but it can be used wherever it is needed as if it was proxying to a
 that it will remain quiet until whatever point a real logger is provided.
 
 ## Usage
+### Basic Usage
 The most basic usage is as follows:
 ```javascript
 var log = require('invigilate')(module);
@@ -55,6 +56,7 @@ module.exports = { /* main export is an object */ };
 logger === module.exports.logger;
 ```
 
+### Full Usage
 Full usage is the same as `Object.defineProperty`, except that the first argument must always be a module object. Described
 below is the full usage of invigilate, shown with the defaults that are assigned to the second and third arguments if none
 are provided:
@@ -75,6 +77,55 @@ var log = require('invigilate')(module, 'logger', {
     configurable: true 
 })
 ```
+
+### Logger Methods
+The returned logger exposes the following methods that developers can use: `fatal, error, warn, info, debug, log`.
+At no point is it required that any or all of these method be defined through the exposed `module.exports.logger` property,
+if they are missing then the default logger will be used (and if the default doesn't have them then they will be handled
+silently).
+
+### The Default Logger
+The default logger is simply a silent logger that will not do anything when called. This logger is exposed on the invigilate
+exports under a loggers property. Both it and the silent logger it is derived from can be accessed through this property:
+```javascript
+var invigilate = require('invigilate');
+
+var silent = invigilate.loggers.silent,
+    defaultLogger = invigilate.loggers.default;
+
+// initially these will be the same
+defaultLogger === silent;
+```
+The default logger can be redefined and set to anything, with the assurance that if any of the log methods listed above are 
+missing, that the silent logger will always be used as a fallback:
+```javascript
+var invigilate = require('invigilate');
+var log = invigilate(module);
+invigilate.loggers.default = {};
+
+// this will still work without issue
+log.info('some messasge');
+```
+Regardless of where the default logger is set, every invigilate instance will pick up the change and start using the new 
+default if another logger is not already overriding it for an individual instance.
+
+### Logger Cache
+invigilate stores a cache of modules that have called it, and this cache is configured to cascade logging configuration 
+updates down through the parent/child chain of modules up to 20 levels. If this is not enough (or maybe too much), the cache
+max. depth is configurable as well through the cache property of the invigilate exports. Cached module ids can also be 
+retrieved this way:
+```javascript
+var invigilate = require('invigilate');
+
+var maxDepth = invigilate.cache.MAX_DEPTH,
+    cached = invigilate.cache.keys;
+
+// only follow parent/child module relations down 2 levels
+invigilate.cache.MAX_DEPTH = 2;
+```
+The cached logging contexts are not exposed intentionally to preserve their integrity. Max. depth can be set to any positive
+integer (all negative values will result in 0 being set, everything else will be ignored).
+
 ## Cascading
 Loggers cascade from parents to children, where the parent-child relationship is defined by the node, require() system,
 such that the first time a module is required, it's parent is set to the module that required it at that point. All 
