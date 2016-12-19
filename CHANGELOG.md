@@ -1,3 +1,9 @@
+## 2.0.0 2016-12-19
+* Moved MAX_DEPTH property under cache export
+* Moved defaultLogger to loggers export under loggers.default
+* Refactored codebase
+* Added tests
+
 ## 1.0.2 2016-12-17
 * Cleaned up published files
 * Updated description
