@@ -110,7 +110,7 @@ Regardless of where the default logger is set, every invigilate instance will pi
 default if another logger is not already overriding it for an individual instance.
 
 ### Local Default Loggers
-The proxy returned from calling invigilate can have a local default logger defined that will override onl the silent logger.
+The proxy returned from calling invigilate can have a local default logger defined that will override only the silent logger.
 If the default logger in `invigilate.loggers` is set to anything other than the silent logger, then the global default will
 be used instead.
 ```javascript
