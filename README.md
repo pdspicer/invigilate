@@ -109,6 +109,29 @@ log.info('some messasge');
 Regardless of where the default logger is set, every invigilate instance will pick up the change and start using the new 
 default if another logger is not already overriding it for an individual instance.
 
+### Local Default Loggers
+The proxy returned from calling invigilate can have a local default logger defined that will override onl the silent logger.
+If the default logger in `invigilate.loggers` is set to anything other than the silent logger, then the global default will
+be used instead.
+```javascript
+var invigilate = require('invigilate');
+var log = invigilate(module);
+
+log.default = {
+    info: function () { /* this will be used */ }
+};
+
+log.info('will use the local default');
+
+invigilate.loggers.default = {};
+
+// this will skip the local default, even if the method has not been provided on the global default,
+// in which case the silent logger will end up being used
+log.info('will not use the local default, will use silent logger');
+```
+The silent logger is used as a fallback in this case because it is assumed that the logging level in question is not of 
+interest to the caller.
+
 ### Logger Cache
 invigilate stores a cache of modules that have called it, and this cache is configured to cascade logging configuration 
 updates down through the parent/child chain of modules up to 20 levels. If this is not enough (or maybe too much), the cache

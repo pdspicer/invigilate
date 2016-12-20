@@ -1,6 +1,6 @@
 {
   "name": "invigilate",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Configurable logging proxy that decouples library development and logging considerations",
   "main": "lib",
   "directories": {

@@ -188,7 +188,7 @@ describe('Configuration', function () {
         });
         
         it('should provide enumerable methods for all logging capabilities on the returned proxy', function () {
-            var levels = ['log', 'debug', 'info', 'warn', 'error', 'fatal'].sort(sortFn);
+            var levels = loggers.methods.sort(sortFn);
             Object.keys(log).sort(sortFn).should.eql(levels);
         });
         
@@ -281,16 +281,16 @@ describe('Logger', function () {
     });
     
     it('should use the default logger function for any instance logger function that is not defined', function () {
-        var called = {log: false, debug: false, info: false, warn: false, error: false, fatal: false};
+        var called = loggers.methods.reduce(function (statusList, method) {
+            return Object.defineProperty(statusList, method, {value: false});
+        }, {});
+        
         mod.exports.logger = {};
-        invigilate.loggers.default = {
-            log: function () { called.log = true; },
-            debug: function () { called.debug = true; },
-            info: function () { called.info = true; },
-            warn: function () { called.warn = true; },
-            error: function () { called.error = true; },
-            fatal: function () { called.fatal = true; }
-        };
+        
+        invigilate.loggers.default = loggers.methods.reduce(function (statusList, method) {
+            return Object.defineProperty(statusList, method, {value: function () { called[method] = true; }});
+        }, {});
+        
         Object.keys(log).forEach(function (method) {
             log[method]('some output');
         });
@@ -318,15 +318,14 @@ describe('Logger', function () {
     });
     
     it('should use the provided instance logger function when it is provided', function () {
-        var called = {log: false, debug: false, info: false, warn: false, error: false, fatal: false};
-        mod.exports.logger = {
-            log: function () { called.log = true; },
-            debug: function () { called.debug = true; },
-            info: function () { called.info = true; },
-            warn: function () { called.warn = true; },
-            error: function () { called.error = true; },
-            fatal: function () { called.fatal = true; }
-        };
+        var called = loggers.methods.reduce(function (statusList, method) {
+            return Object.defineProperty(statusList, method, {value: false});
+        }, {});
+        
+        mod.exports.logger = loggers.methods.reduce(function (statusList, method) {
+            return Object.defineProperty(statusList, method, {value: function () { called[method] = true; }});
+        }, {});
+        
         Object.keys(log).forEach(function (method) {
             log[method]('some output');
         });
@@ -601,6 +600,74 @@ describe('Cache', function () {
                     grandchildContext.logger.should.equal(parentContext.logger);
                 });
             });
+        });
+    });
+    
+    describe('Proxy', function () {
+        before(function () {
+            initMod();
+            invigilate.loggers.default = null;
+            log = invigilate(mod);
+        });
+        
+        it('should allow a local default to be defined', function () {
+            var customDefault = {};
+            log.default = customDefault;
+            log.default.should.equal(customDefault);
+        });
+        
+        it('should use the local default if the global default is the silent logger', function () {
+            var called = loggers.methods.reduce(function (logger, method) {
+                return Object.defineProperty(logger, method, {value: false});
+            }, {});
+            
+            log.default = loggers.methods.reduce(function (logger, method) {
+                return Object.defineProperty(logger, method, {value: function () { called[method] = true; }});
+            }, {});
+    
+            Object.keys(log).forEach(function (method) {
+                log[method]('some output');
+            });
+    
+            Object.keys(called, function (method) {
+                called[method].should.be.true();
+            });
+        });
+    
+        it('should use the global default even if the local default is defined', function () {
+            var called = loggers.methods.reduce(function (logger, method) {
+                return Object.defineProperty(logger, method, {value: {local: false, global: false}});
+            }, {});
+        
+            log.default = loggers.methods.reduce(function (logger, method) {
+                return Object.defineProperty(logger, method, {value: function () { called[method].local = true; }});
+            }, {});
+    
+            invigilate.loggers.default = loggers.methods.reduce(function (logger, method) {
+                return Object.defineProperty(logger, method, {value: function () { called[method].local = true; }});
+            }, {});
+        
+            Object.keys(log).forEach(function (method) {
+                log[method]('some output');
+            });
+        
+            Object.keys(called, function (method) {
+                called[method].local.should.be.false();
+                called[method].global.should.be.true();
+            });
+        });
+        
+        it('should throw an error if attempting to call a method that is not in loggers.methods', function () {
+            var err = null;
+            
+            try {
+                log.asdhfakjasldkgj('some output');
+            }
+            catch (error) {
+                err = error;
+            }
+            
+            should.exist(err);
         });
     });
 });
