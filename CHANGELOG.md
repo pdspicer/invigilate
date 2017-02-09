@@ -1,3 +1,6 @@
+## 2.1.1 (2017-02-09)
+* Fixed issue with cascading preventing children from using the global default logger
+
 ## 2.1.0 (2016-12-20)
 * Added option for local default on returned logger proxy
 
